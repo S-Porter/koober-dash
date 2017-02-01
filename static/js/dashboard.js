@@ -1,4 +1,4 @@
 ReactDOM.render(
-    <h1>Hello world!</h1>,
+    <p>Hello world!</p>,
     document.getElementById('app')
 );
