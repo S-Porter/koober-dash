@@ -1,33 +1,84 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"regexp"
 	"strconv"
+	"strings"
 )
 
-var validPath = regexp.MustCompile("(^/$|^/(api/)$)")
+type style struct {
+	StyleName  string `json:"styleName"`
+	StyleValue string `json:"styleValue"`
+}
+type notFound struct {
+	Error string `json:"error"`
+}
+type styleSuccess struct {
+	Data style `json:"data"`
+}
+type styleError struct {
+	Error string `json:"error"`
+}
+
+var validPath = regexp.MustCompile("^/api/")
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Print("index handler, request url " + r.URL.Path + "   ")
+	fmt.Println("index handler, request url " + r.URL.Path)
 	http.ServeFile(w, r, "static/index.html")
 }
 
+//can test this with just curl localhost:8080/api/
 func apiHandler(w http.ResponseWriter, r *http.Request) {
 	m := validPath.FindStringSubmatch(r.URL.Path)
 	if m == nil {
 		http.NotFound(w, r)
-		fmt.Print(r.URL.Path + " is not a valid path.\n")
+		fmt.Println(r.URL.Path + " is not a valid path")
 		return
 	}
-	fmt.Print("api handler, request url " + r.URL.Path + "   ")
-	http.Redirect(w, r, "/", http.StatusFound)
+
+	urlArgs := sliceFromURL(r.URL.Path)
+	data := apiRouter(urlArgs)
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(data)
+	fmt.Println(string(data))
+	return
+}
+
+/* takes the remaining parts of the url and routes to the proper functions */
+func apiRouter(params []string) []byte {
+	switch params[0] {
+	case "style":
+		response, err := json.Marshal(styleSuccess{style{params[1], params[2]}})
+		if err != nil {
+			response, _ := json.Marshal(styleError{err.Error()})
+			return response
+		}
+		return response
+	default:
+		response, _ := json.Marshal(notFound{"requested api section not found"})
+		return response
+	}
+}
+
+/* convenience fn to remove the "" and "api" when we split */
+func sliceFromURL(s string) []string {
+	urlParts := strings.Split(s, "/")
+	if urlParts[0] == "" {
+		urlParts = urlParts[1:]
+	}
+	if urlParts[len(urlParts)-1] == "" {
+		urlParts = urlParts[:len(urlParts)-1]
+	}
+	return urlParts[1:]
 }
 
 func main() {
 	port := 8080
-	fmt.Print("listening on port " + strconv.Itoa(port) + "...\n")
+	fmt.Println("listening on port " + strconv.Itoa(port) + "...\n")
 	http.HandleFunc("/api/", apiHandler)
 	http.HandleFunc("/", indexHandler)
 
