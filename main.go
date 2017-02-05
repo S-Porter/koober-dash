@@ -5,9 +5,10 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"regexp"
 	"strconv"
 	"strings"
+
+	wow "github.com/S-Porter/wow-go-utils"
 )
 
 type style struct {
@@ -25,17 +26,8 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 
 //can test this with just curl localhost:8080/api/
 func apiHandler(w http.ResponseWriter, r *http.Request) {
-	var validPath = regexp.MustCompile("^/api/")
-	m := validPath.FindStringSubmatch(r.URL.Path)
-	if m == nil {
-		http.NotFound(w, r)
-		fmt.Println(r.URL.Path + " is not a valid path")
-		return
-	}
-
 	urlArgs := sliceFromURL(r.URL.Path)
 	data := apiRouter(urlArgs)
-
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(data)
 	fmt.Println(string(data))
@@ -57,8 +49,8 @@ func apiRouter(params []string) []byte {
 			return response
 		case "wow":
 			response, err := json.Marshal(struct {
-				Data style `json:"data"`
-			}{style{params[1], params[2]}})
+				Data string `json:"data"`
+			}{wow.PackageTest(params[1:])})
 			if err != nil {
 				return errorJSON(err)
 			}
@@ -81,7 +73,7 @@ func errorJSON(e error) []byte {
 	return response
 }
 
-/* convenience fn to remove the "" and "api" when we split */
+/* convenience fn to remove the "" and "api" when we split the url */
 func sliceFromURL(s string) []string {
 	urlParts := strings.Split(s, "/")
 	if urlParts[0] == "" {
