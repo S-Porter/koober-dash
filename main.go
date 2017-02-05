@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"regexp"
@@ -14,12 +15,6 @@ type style struct {
 	StyleValue string `json:"styleValue"`
 }
 type notFound struct {
-	Error string `json:"error"`
-}
-type styleSuccess struct {
-	Data style `json:"data"`
-}
-type styleError struct {
 	Error string `json:"error"`
 }
 
@@ -47,20 +42,42 @@ func apiHandler(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
-/* takes the remaining parts of the url and routes to the proper functions */
+/* Takes the remaining parts of the url and routes to the proper functions.
+   Making these cases with anon structs saves a bunch of definitions up top. */
 func apiRouter(params []string) []byte {
 	if len(params) > 0 {
 		switch params[0] {
 		case "style":
-			response, err := json.Marshal(styleSuccess{style{params[1], params[2]}})
+			response, err := json.Marshal(struct {
+				Data style `json:"data"`
+			}{style{params[1], params[2]}})
 			if err != nil {
-				response, _ := json.Marshal(styleError{err.Error()})
-				return response
+				return errorJSON(err)
 			}
 			return response
+		case "wow":
+			response, err := json.Marshal(struct {
+				Data style `json:"data"`
+			}{style{params[1], params[2]}})
+			if err != nil {
+				return errorJSON(err)
+			}
+			return response
+		default:
+			return errorJSON(errors.New("requested API section not found"))
 		}
 	}
-	response, _ := json.Marshal(notFound{"requested api section not found"})
+	return errorJSON(errors.New("api args were empty"))
+}
+
+/* returns a standard JSON encoded error */
+func errorJSON(e error) []byte {
+	response, err := json.Marshal(struct {
+		Error string `json:"error"`
+	}{e.Error()})
+	if err != nil {
+		panic("Error encoding the JSON error. Something went horribly wrong.")
+	}
 	return response
 }
 
