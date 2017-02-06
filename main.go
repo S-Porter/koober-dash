@@ -48,13 +48,7 @@ func apiRouter(params []string) []byte {
 			}
 			return response
 		case "wow":
-			response, err := json.Marshal(struct {
-				Data string `json:"data"`
-			}{wow.PackageTest(params[1:])})
-			if err != nil {
-				return errorJSON(err)
-			}
-			return response
+			return wow.Dispatch(params[1:])
 		default:
 			return errorJSON(errors.New("requested API section not found"))
 		}
