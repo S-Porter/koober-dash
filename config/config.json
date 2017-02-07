@@ -1,14 +1,4 @@
 {
     "wowInstall": "/path/on/disk",
-    "apiKey": "super-secret-api-key",
-    "characters": [
-        {
-            "realm": "Proudmoore",
-            "name": "Glaaki"
-        },
-        {
-            "realm": "Proudmoore",
-            "name": "Glug"
-        }
-    ]
+    "apiKey": "super-secret-api-key"
 }
