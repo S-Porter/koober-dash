@@ -3,12 +3,9 @@
         {
             "realm": "Proudmoore",
             "name": "Glaaki",
-            "items": []
-        },
-        {
-            "realm": "Proudmoore",
-            "name": "Glug",
-            "items": []
+            "items": [],
+            "reputation": [],
+            "lastModified": 20
         }
     ]
 }
