@@ -1,98 +1,92 @@
 package main
 
 import (
-	"fmt"
-	"regexp"
-	"html/template"
-	"strconv"
-	"io/ioutil"
-	"net/http"
+	"encoding/json"
 	"errors"
+	"fmt"
+	"net/http"
+	"strconv"
+	"strings"
+
+	wow "github.com/S-Porter/wow-go-utils"
 )
 
-//Page template
-type Page struct {
-	Title string
-	Body  []byte
+type style struct {
+	StyleName  string `json:"styleName"`
+	StyleValue string `json:"styleValue"`
+}
+type notFound struct {
+	Error string `json:"error"`
 }
 
-var templates = template.Must(template.ParseFiles("tmpl/edit.html", "tmpl/view.html"))
-var validPath = regexp.MustCompile("^/(edit|save|view)/([a-zA-Z0-9]+)$")
-
-func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
-    err := templates.ExecuteTemplate(w, tmpl+".html", p)
-    if err != nil {
-        http.Error(w, err.Error(), http.StatusInternalServerError)
-    }
+func indexHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("index handler, request url " + r.URL.Path)
+	http.ServeFile(w, r, "static/index.html")
 }
 
-func viewHandler(w http.ResponseWriter, r *http.Request, title string) {
-    p, err := loadPage(title)
-    if err != nil {
-        http.Redirect(w, r, "/edit/"+title, http.StatusFound)
-        return
-    }
-    renderTemplate(w, "view", p)
+//can test this with just curl localhost:8080/api/
+func apiHandler(w http.ResponseWriter, r *http.Request) {
+	urlArgs := sliceFromURL(r.URL.Path)
+	data := apiRouter(urlArgs)
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(data)
+	fmt.Println(string(data))
+	return
 }
 
-func editHandler(w http.ResponseWriter, r *http.Request, title string) {
-    p, err := loadPage(title)
-    if err != nil {
-        p = &Page{Title: title}
-    }
-    renderTemplate(w, "edit", p)
-}
-
-func saveHandler(w http.ResponseWriter, r *http.Request, title string) {
-    body := r.FormValue("body")
-    p := &Page{Title: title, Body: []byte(body)}
-    err := p.save()
-    if err != nil {
-        http.Error(w, err.Error(), http.StatusInternalServerError)
-        return
-    }
-    http.Redirect(w, r, "/view/"+title, http.StatusFound)
-}
-
-func makeHandler(fn func(http.ResponseWriter, *http.Request, string)) http.HandlerFunc {
-    return func(w http.ResponseWriter, r *http.Request) {
-        m := validPath.FindStringSubmatch(r.URL.Path)
-        if m == nil {
-            http.NotFound(w, r)
-            return
-        }
-        fn(w, r, m[2])
-    }
-}
-
-func getTitle(w http.ResponseWriter, r *http.Request) (string, error) {
-    m := validPath.FindStringSubmatch(r.URL.Path)
-    if m == nil {
-        http.NotFound(w, r)
-        return "", errors.New("Invalid Page Title")
-    }
-    return m[2], nil // The title is the second subexpression.
-}
-
-func loadPage(title string) (*Page, error) {
-	filename := "data/" + title + ".txt"
-	body, err := ioutil.ReadFile(filename)
-	if err != nil {
-		return nil, err
+/* Takes the remaining parts of the url and routes to the proper functions.
+   Making these cases with anon structs saves a bunch of definitions up top. */
+func apiRouter(params []string) []byte {
+	if len(params) > 0 {
+		switch params[0] {
+		case "style":
+			response, err := json.Marshal(struct {
+				Data style `json:"data"`
+			}{style{params[1], params[2]}})
+			if err != nil {
+				return errorJSON(err)
+			}
+			return response
+		case "wow":
+			return wow.Dispatch(params[1:])
+		default:
+			return errorJSON(errors.New("requested API section not found"))
+		}
 	}
-	return &Page{Title: title, Body: body}, nil
+	return errorJSON(errors.New("api args were empty"))
 }
 
-func (p *Page) save() error {
-	filename := "data/" + p.Title + ".txt"
-	return ioutil.WriteFile(filename, p.Body, 0600)
+/* returns a standard JSON encoded error */
+func errorJSON(e error) []byte {
+	response, err := json.Marshal(struct {
+		Error string `json:"error"`
+	}{e.Error()})
+	if err != nil {
+		panic("Error encoding the JSON error. Something went horribly wrong.")
+	}
+	return response
+}
+
+/* convenience fn to remove the "" and "api" when we split the url */
+func sliceFromURL(s string) []string {
+	urlParts := strings.Split(s, "/")
+	if urlParts[0] == "" {
+		urlParts = urlParts[1:]
+	}
+	if urlParts[len(urlParts)-1] == "" {
+		urlParts = urlParts[:len(urlParts)-1]
+	}
+	return urlParts[1:]
 }
 
 func main() {
 	port := 8080
-	fmt.Print("listening on port " + strconv.Itoa(port) + "...\n")
-	http.HandleFunc("/view/", makeHandler(viewHandler))
-	http.HandleFunc("/edit/", makeHandler(editHandler))
-	http.HandleFunc("/save/", makeHandler(saveHandler))
-	http.ListenAndServe(":8080", nil)
+	fmt.Println("listening on port " + strconv.Itoa(port) + "...\n")
+	http.HandleFunc("/api/", apiHandler)
+	http.HandleFunc("/", indexHandler)
+
+	//handler for the css and js files.
+	fs := http.FileServer(http.Dir("static"))
+	http.Handle("/static/", http.StripPrefix("/static/", fs))
+	http.ListenAndServe(":"+strconv.Itoa(port), nil)
 }

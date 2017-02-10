@@ -1,0 +1,5 @@
+{
+    "wowInstall": "/path/on/disk",
+    "apiKey": "super-secret-api-key",
+    "updateTimeout": 5
+}
