@@ -1,1 +1,1 @@
-A dashboard page to aggregate a bunch of funcionality to my browser.
+A dashboard page to aggregate a bunch of functionality to my browser. This is mostly so I can learn a new language (Go) and JS frontend (React).
