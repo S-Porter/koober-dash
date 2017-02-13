@@ -1,3 +1,25 @@
+class KooberDashboard extends React.Component {
+    render() {
+        return (
+            <div className="dashboardRoot">
+                <div className="wowRoot">
+                    <WowApp name="Sean" />
+                </div>
+            </div>
+        );
+    }
+}
+
+class WowApp extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+    render() {
+        return (
+            <HelloWorld name={this.props.name} />
+        );
+    }
+}
 
 class HelloWorld extends React.Component {
     constructor(props) {
@@ -34,6 +56,6 @@ class HelloWorld extends React.Component {
 }
 
 ReactDOM.render(
-    <HelloWorld name="Sean"/>,
+    <KooberDashboard />,
     document.getElementById('app')
 );
