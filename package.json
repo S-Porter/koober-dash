@@ -1,0 +1,29 @@
+{
+  "name": "koober-dash",
+  "version": "1.0.0",
+  "description": "A dashboard page to aggregate a bunch of functionality to my browser. This is mostly so I can learn a new language (Go) and JS frontend (React).",
+  "main": "dashboard.jsx",
+  "scripts": {
+    "start": "./node_modules/.bin/webpack -d && koober-dash",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/S-Porter/koober-dash.git"
+  },
+  "author": "S-Porter",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/S-Porter/koober-dash/issues"
+  },
+  "homepage": "https://github.com/S-Porter/koober-dash#readme",
+  "dependencies": {
+    "babel-core": "^6.23.0",
+    "babel-loader": "^6.2.10",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-react": "^6.23.0",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "webpack": "^2.2.1"
+  }
+}

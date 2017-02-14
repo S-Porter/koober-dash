@@ -1,3 +1,5 @@
 .vscode/*
 debug
 config/*
+node_modules/*
+static/js/public/*

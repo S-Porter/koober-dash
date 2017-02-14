@@ -3,7 +3,7 @@ class KooberDashboard extends React.Component {
         return (
             <div className="dashboardRoot">
                 <div className="wowRoot">
-                    <WowApp name="Sean" />
+                    <WowApp name="Dude" />
                 </div>
             </div>
         );
