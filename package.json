@@ -4,7 +4,7 @@
   "description": "A dashboard page to aggregate a bunch of functionality to my browser. This is mostly so I can learn a new language (Go) and JS frontend (React).",
   "main": "dashboard.jsx",
   "scripts": {
-    "start": "./node_modules/.bin/webpack -d && koober-dash",
+    "start": "./node_modules/.bin/webpack -d && go install && koober-dash",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
