@@ -19,12 +19,11 @@ class WowApp extends React.Component {
     };
 
     render() {
+        const rep_lis = this.state.rep.data.map((rep, i) =>
+            <li key={i}>{rep.Name}: {rep.Value}</li>
+        );
         return (
-            <ul>
-                {this.state.rep.data.map(function (rep) {
-                    return <li>{rep.Name}: {rep.Value}</li>
-                })}
-            </ul>
+            <ul>{rep_lis}</ul>
         );
     }
 }

@@ -1,3 +1,5 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
 import WowApp from './wowapp.jsx';
 
 class KooberDashboard extends React.Component {
