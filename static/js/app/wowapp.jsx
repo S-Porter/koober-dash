@@ -1,4 +1,5 @@
 import React from 'react';
+import {List, ListItem} from 'material-ui/List';
 
 class WowApp extends React.Component {
     constructor(props) {
@@ -20,10 +21,12 @@ class WowApp extends React.Component {
 
     render() {
         const rep_lis = this.state.rep.data.map((rep, i) =>
-            <li key={i}>{rep.Name}: {rep.Value}</li>
+            <ListItem key={i}>{rep.Name}: {rep.Value}</ListItem>
         );
         return (
-            <ul>{rep_lis}</ul>
+            <List>
+                {rep_lis}
+            </List>
         );
     }
 }
