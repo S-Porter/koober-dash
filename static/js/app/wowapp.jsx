@@ -5,26 +5,27 @@ class WowApp extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            rep: {data: []}
+            characters: []
         }
     }
 
     componentDidMount() {
-        fetch("http://localhost:8080/api/wow/getrep/proudmoore/glaaki")
+        fetch("http://localhost:8080/api/wow/getdatastore")
             .then((response) => {
                 return response.json();
             }).then((json) => {
-                this.setState({ rep: json })
+                this.setState({ characters: json.characters })
             });
     };
 
     render() {
-        const rep_lis = this.state.rep.data.map((rep, i) =>
-            <ListItem key={i}>{rep.Name}: {rep.Value}</ListItem>
-        );
+        console.log(this.state)
+        const char_lis = this.state.characters.map((character, i) => (
+            <ListItem key={i}>{character.realm}: {character.name}</ListItem>
+        ));
         return (
             <List>
-                {rep_lis}
+                {char_lis}
             </List>
         );
     }
