@@ -10,12 +10,11 @@ class WowApp extends React.Component {
     }
 
     componentDidMount() {
-        const self = this;
         fetch("http://localhost:8080/api/wow/getrep/proudmoore/glaaki")
-            .then(function (response) {
+            .then((response) => {
                 return response.json();
-            }).then(function (json) {
-                self.setState({ rep: json })
+            }).then((json) => {
+                this.setState({ rep: json })
             });
     };
 
