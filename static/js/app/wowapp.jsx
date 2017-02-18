@@ -1,5 +1,6 @@
 import React from 'react';
-import {List, ListItem} from 'material-ui/List';
+import { List, ListItem } from 'material-ui/List';
+import Paper from 'material-ui/Paper';
 
 class WowApp extends React.Component {
     constructor(props) {
@@ -20,13 +21,21 @@ class WowApp extends React.Component {
 
     render() {
         console.log(this.state)
+        const style = {
+            height: 40,
+            width: 220,
+            margin: 15,
+            display: 'inline-block',
+            textAlign: 'center'
+        }
+        
         const char_lis = this.state.characters.map((character, i) => (
-            <ListItem key={i}>{character.realm}: {character.name}</ListItem>
+            <Paper key={i} zDepth={2} style={style}>{character.realm}: {character.name}</Paper>
         ));
         return (
-            <List>
+            <div>
                 {char_lis}
-            </List>
+            </div>
         );
     }
 }
