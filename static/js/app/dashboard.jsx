@@ -17,10 +17,10 @@ class KooberDashboard extends React.Component {
         return (
             <Tabs>
                 <Tab label='WowApp'>
-                    <WowApp name="Dude" />
+                    <WowApp />
                 </Tab>
-                <Tab label='FoodApp'>
-                    <Paper style={{ height: 40, width: 220, margin: 15 }}>Food App</Paper>
+                <Tab label='MusicApp'>
+                    <Paper style={{ height: 40, width: 220, margin: 15 }}>Music App</Paper>
                 </Tab>
                 <Tab label='NoteApp'>
                     <Paper style={{ height: 40, width: 220, margin: 15 }}>Notes App</Paper>

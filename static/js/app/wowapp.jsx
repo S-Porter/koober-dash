@@ -26,7 +26,8 @@ class WowApp extends React.Component {
             width: 220,
             margin: 15,
             display: 'inline-block',
-            textAlign: 'center'
+            textAlign: 'center',
+            lineHeight: '40px'
         }
         
         const char_lis = this.state.characters.map((character, i) => (
