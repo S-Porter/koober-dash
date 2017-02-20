@@ -1,13 +1,22 @@
+/*
+    Sections:
+    Search/Char Overview
+    Xmog wishlist
+    Notes per character.
+*/
+
 import React from 'react';
 import { List, ListItem } from 'material-ui/List';
 import Paper from 'material-ui/Paper';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
 
 class WowApp extends React.Component {
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             characters: []
-        }
+        };
     }
 
     componentDidMount() {
@@ -35,8 +44,22 @@ class WowApp extends React.Component {
         ));
         return (
             <div>
+                <WowSearch />
                 {char_lis}
             </div>
+        );
+    }
+}
+
+class WowSearch extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {};
+    }
+
+    render() {
+        return (
+            <div><TextField id='wowTextBox' style={{margin: 20}}></TextField><RaisedButton>Button</RaisedButton></div>
         );
     }
 }
