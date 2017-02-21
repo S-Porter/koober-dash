@@ -15,7 +15,7 @@ injectTapEventPlugin();
 class KooberDashboard extends React.Component {
     render() {
         return (
-            <Tabs>
+            <Tabs tabItemContainerStyle={{ background: '#212121', color: 'white' }} inkBarStyle={{ display: 'none' }}>
                 <Tab label='WowApp'>
                     <WowApp />
                 </Tab>
