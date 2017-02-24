@@ -37,6 +37,9 @@ class WowApp extends React.Component {
             textAlign: 'center',
             lineHeight: '40px'
         }
+        const paper_style = {
+            minHeight: 200
+        }
         
         const char_lis = this.state.characters.map((character, i) => (
             <Paper key={i} zDepth={2} style={char_style}>{character.realm}: {character.name}</Paper>
@@ -45,9 +48,9 @@ class WowApp extends React.Component {
         return (
             <div>
                 <Tabs tabItemContainerStyle={{ background: '#212121', color: 'white' }} inkBarStyle={{ display: 'none' }}>
-                    <Tab label='Characters'><Paper zDepth={2}>{char_lis}</Paper></Tab>
-                    <Tab label='Character ToDo'><Paper zDepth={2} style={char_style}>todo placeholder</Paper></Tab>
-                    <Tab label='XMOG Wishlist'><Paper zDepth={2} style={char_style}>wishlist placeholder</Paper></Tab>
+                    <Tab label='Characters'><Paper zDepth={2} style={paper_style}>{char_lis}</Paper></Tab>
+                    <Tab label='Character ToDo'><Paper zDepth={2} style={paper_style}><Paper zDepth={2} style={char_style}>todo placeholder</Paper></Paper></Tab>
+                    <Tab label='XMOG Wishlist'><Paper zDepth={2} style={paper_style}><Paper zDepth={2} style={char_style}>wishlist placeholder</Paper></Paper></Tab>
                 </Tabs>
             </div>
         );

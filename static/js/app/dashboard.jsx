@@ -59,7 +59,10 @@ class Search extends React.Component {
 
     render() {
         return (
-            <div style={{float: 'right'}}><TextField id='mainTextBox' ></TextField><RaisedButton>Button</RaisedButton></div>
+            <div style={{ float: 'right' }}>
+                <TextField id='mainTextBox' ></TextField>
+                <RaisedButton style={{ marginLeft: '8px' }}>Button</RaisedButton>
+            </div>
         );
     }
 }
