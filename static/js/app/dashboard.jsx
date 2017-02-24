@@ -5,6 +5,8 @@ import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import Paper from 'material-ui/Paper';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import MenuItem from 'material-ui/MenuItem';
 import WowApp from './wowapp.jsx';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
@@ -13,19 +15,36 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
 class KooberDashboard extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            activeApp: 'wow',
+            apps: {
+                '1': <WowApp />,
+                '2': <Paper>music app</Paper>,
+                '3': <Paper>food app</Paper>
+            }
+        };
+    }
+
+    handleChange(event, index, value){
+        this.setState({activeApp: value})
+    }
+
     render() {
         return (
-            <Tabs tabItemContainerStyle={{ background: '#212121', color: 'white' }} inkBarStyle={{ display: 'none' }}>
-                <Tab label='WowApp'>
-                    <WowApp />
-                </Tab>
-                <Tab label='MusicApp'>
-                    <Paper style={{ height: 40, width: 220, margin: 15 }}>Music App</Paper>
-                </Tab>
-                <Tab label='NoteApp'>
-                    <Paper style={{ height: 40, width: 220, margin: 15 }}>Notes App</Paper>
-                </Tab>
-            </Tabs>
+            <div>
+                <div className='header'>
+                    <DropDownMenu value={this.state.activeApp} onChange={this.handleChange.bind(this)}>
+                        <MenuItem value={'1'} primaryText="WoW" />
+                        <MenuItem value={'2'} primaryText="Music" />
+                        <MenuItem value={'3'} primaryText="Food" />
+                    </DropDownMenu>
+                </div>
+                <Paper className='appPane'>
+                    {this.state.apps[this.state.activeApp]}
+                </Paper>
+            </div>
         );
     }
 }
