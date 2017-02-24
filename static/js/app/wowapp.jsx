@@ -28,7 +28,32 @@ class WowApp extends React.Component {
     };
 
     render() {
-        console.log(this.state)
+        return (
+            <div>
+                <Tabs tabItemContainerStyle={{ background: '#212121', color: 'white' }} inkBarStyle={{ display: 'none' }}>
+                    <Tab label='Characters'><CharacterOverview chars={this.state.characters} /></Tab>
+                    <Tab label='Character ToDo'>
+                        <Paper zDepth={2} style={{ minHeight: 200 }}>
+                            <Paper zDepth={2}>todo placeholder</Paper>
+                        </Paper>
+                    </Tab>
+                    <Tab label='XMOG Wishlist'>
+                        <Paper zDepth={2} style={{ minHeight: 200 }}>
+                            <Paper zDepth={2}>wishlist placeholder</Paper>
+                        </Paper>
+                    </Tab>
+                </Tabs>
+            </div>
+        );
+    }
+}
+
+class CharacterOverview extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
         const char_style = {
             height: 40,
             width: 220,
@@ -37,22 +62,14 @@ class WowApp extends React.Component {
             textAlign: 'center',
             lineHeight: '40px'
         }
-        const paper_style = {
-            minHeight: 200
-        }
-        
-        const char_lis = this.state.characters.map((character, i) => (
-            <Paper key={i} zDepth={2} style={char_style}>{character.realm}: {character.name}</Paper>
+        const char_cards = this.props.chars.map((character, i) => (
+            <Paper key={i} zDepth={2} style={char_style}>{character.name}</Paper>
         ));
 
         return (
-            <div>
-                <Tabs tabItemContainerStyle={{ background: '#212121', color: 'white' }} inkBarStyle={{ display: 'none' }}>
-                    <Tab label='Characters'><Paper zDepth={2} style={paper_style}>{char_lis}</Paper></Tab>
-                    <Tab label='Character ToDo'><Paper zDepth={2} style={paper_style}><Paper zDepth={2} style={char_style}>todo placeholder</Paper></Paper></Tab>
-                    <Tab label='XMOG Wishlist'><Paper zDepth={2} style={paper_style}><Paper zDepth={2} style={char_style}>wishlist placeholder</Paper></Paper></Tab>
-                </Tabs>
-            </div>
+            <Paper zDepth={2} style={{ minHeight: 200 }}>
+                {char_cards}
+            </Paper>
         );
     }
 }
