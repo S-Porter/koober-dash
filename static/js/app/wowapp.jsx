@@ -7,9 +7,8 @@
 
 import React from 'react';
 import { List, ListItem } from 'material-ui/List';
+import { Tabs, Tab } from 'material-ui/Tabs';
 import Paper from 'material-ui/Paper';
-import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
 
 class WowApp extends React.Component {
     constructor(props) {
@@ -30,7 +29,7 @@ class WowApp extends React.Component {
 
     render() {
         console.log(this.state)
-        const style = {
+        const char_style = {
             height: 40,
             width: 220,
             margin: 15,
@@ -40,26 +39,17 @@ class WowApp extends React.Component {
         }
         
         const char_lis = this.state.characters.map((character, i) => (
-            <Paper key={i} zDepth={2} style={style}>{character.realm}: {character.name}</Paper>
+            <Paper key={i} zDepth={2} style={char_style}>{character.realm}: {character.name}</Paper>
         ));
+
         return (
             <div>
-                <WowSearch />
-                {char_lis}
+                <Tabs tabItemContainerStyle={{ background: '#212121', color: 'white' }} inkBarStyle={{ display: 'none' }}>
+                    <Tab label='Characters'><Paper zDepth={2}>{char_lis}</Paper></Tab>
+                    <Tab label='Character ToDo'><Paper zDepth={2} style={char_style}>todo placeholder</Paper></Tab>
+                    <Tab label='XMOG Wishlist'><Paper zDepth={2} style={char_style}>wishlist placeholder</Paper></Tab>
+                </Tabs>
             </div>
-        );
-    }
-}
-
-class WowSearch extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {};
-    }
-
-    render() {
-        return (
-            <div><TextField id='wowTextBox' style={{margin: 20}}></TextField><RaisedButton>Button</RaisedButton></div>
         );
     }
 }
