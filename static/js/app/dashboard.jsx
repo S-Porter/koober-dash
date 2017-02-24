@@ -18,7 +18,7 @@ class KooberDashboard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            activeApp: 'wow',
+            activeApp: '1',
             apps: {
                 '1': <WowApp />,
                 '2': <Paper>music app</Paper>,
