@@ -6,6 +6,8 @@
 */
 
 import React from 'react';
+import Checkbox from 'material-ui/Checkbox';
+import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
 import { List, ListItem } from 'material-ui/List';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import Paper from 'material-ui/Paper';
@@ -50,15 +52,21 @@ class CharToDoPane extends React.Component {
     }
 
     render() {
-        const char_style = {
-            height: 40,
+        const card_style = {
             margin: 15,
-            display: 'block',
-            textAlign: 'center',
-            lineHeight: '40px'
         }
         const char_cards = this.props.chars.map((character, i) => (
-            <Paper key={i} zDepth={2} style={char_style}>{character.name}</Paper>
+            <Card key={i} zDepth={2} style={card_style}>
+                <CardHeader title={character.name} actAsExpander={true} showExpandableButton={true} />
+                <CardText expandable={true}>
+                    <List>
+                        <ListItem leftCheckbox={<Checkbox />}>Step 1</ListItem>
+                        <ListItem leftCheckbox={<Checkbox />}>Step 2</ListItem>
+                        <ListItem leftCheckbox={<Checkbox />}>???</ListItem>
+                        <ListItem leftCheckbox={<Checkbox />}>Profit.</ListItem>
+                    </List>
+                </CardText>
+            </Card>
         ));
 
         return (
