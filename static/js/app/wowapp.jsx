@@ -31,12 +31,8 @@ class WowApp extends React.Component {
         return (
             <div>
                 <Tabs tabItemContainerStyle={{ background: '#212121', color: 'white' }} inkBarStyle={{ display: 'none' }}>
-                    <Tab label='Characters'><CharacterOverview chars={this.state.characters} /></Tab>
-                    <Tab label='Character ToDo'>
-                        <Paper zDepth={2} style={{ minHeight: 200 }}>
-                            <Paper zDepth={2}>todo placeholder</Paper>
-                        </Paper>
-                    </Tab>
+                    <Tab label='Characters'><CharOverviewPane chars={this.state.characters} /></Tab>
+                    <Tab label='Characters TODO'><CharToDoPane chars={this.state.characters} /></Tab>
                     <Tab label='XMOG Wishlist'>
                         <Paper zDepth={2} style={{ minHeight: 200 }}>
                             <Paper zDepth={2}>wishlist placeholder</Paper>
@@ -48,7 +44,32 @@ class WowApp extends React.Component {
     }
 }
 
-class CharacterOverview extends React.Component {
+class CharToDoPane extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        const char_style = {
+            height: 40,
+            margin: 15,
+            display: 'block',
+            textAlign: 'center',
+            lineHeight: '40px'
+        }
+        const char_cards = this.props.chars.map((character, i) => (
+            <Paper key={i} zDepth={2} style={char_style}>{character.name}</Paper>
+        ));
+
+        return (
+            <Paper zDepth={2} style={{ minHeight: 200 }}>
+                {char_cards}
+            </Paper>
+        );
+    }
+}
+
+class CharOverviewPane extends React.Component {
     constructor(props) {
         super(props);
     }
