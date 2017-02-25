@@ -70,7 +70,7 @@ class CharToDoPane extends React.Component {
         ));
 
         return (
-            <Paper zDepth={2} style={{ minHeight: 200 }}>
+            <Paper zDepth={2} style={{ minHeight: 200, height: '100%' }}>
                 {char_cards}
             </Paper>
         );
