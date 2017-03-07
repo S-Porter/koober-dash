@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"strings"
 
-	wow "github.com/S-Porter/wow-go-utils"
+	wow "github.com/glaaki/wow-go-utils"
 )
 
 type style struct {
